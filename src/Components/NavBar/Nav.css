@@ -1,0 +1,17 @@
+.nav{
+    grid-area: nav;
+    background-color: cadetblue;
+  }
+  
+
+.item{
+    color: #fff;
+    margin: 15px;
+
+}
+
+.item a {
+  color: #fff;
+  text-decoration: none;
+}
+

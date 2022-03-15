@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 
 let mapStateToProps = (state) =>{
     return{
-        dialogsReducer: state.dialogsReducer
+        dialogsPage: state.dialogsPage
     }
 }
 let mapDispatchToProps = (dispatch) =>{

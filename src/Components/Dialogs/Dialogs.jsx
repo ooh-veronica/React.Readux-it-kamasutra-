@@ -5,7 +5,7 @@ import Message from '../Dialogs/Message/Message'
 
 function Dialogs(props) {
 
-  let state = props.dialogsReducer
+  let state = props.dialogsPage
 
   let dialogsElements = state.dialogsData
     .map((item) => {

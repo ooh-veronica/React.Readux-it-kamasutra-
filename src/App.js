@@ -1,11 +1,11 @@
 import './App.css';
 import './Components/Profile/Profile.css'
-import Header from './Components/Header/Heaader.jsx';
+import HeaderContainer from './Components/Header/HeaderContainer';
 import Nav from './Components/NavBar/Naav.jsx';
-import Proofile from './Components/Profile/Proofile.jsx'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DialogsContainer from './Components/Dialogs/DialogsContainer';
 import UsersContainer from './Components/Users/UsersContainer.jsx';
+import ProfileContainer from './Components/Profile/ProfileContainer';
 
 const  App = (props) => {
 
@@ -15,7 +15,7 @@ const  App = (props) => {
     <BrowserRouter>
       
       <div className ="app-wrapper">
-        <Header />
+        <HeaderContainer />
         <Nav />
         <div className='app-wrapper-content'>
           <Routes>
@@ -24,8 +24,11 @@ const  App = (props) => {
             element={<DialogsContainer />} />
 
 
-          <Route path='/profile' 
-            element={<Proofile />}/>
+          {/* <Route path='/profile/:userId?' // ? даем понять,что параметр не обязательный
+            element={<ProfileContainer />}/> */}
+            <Route path="/profile" element={<ProfileContainer />}>
+              <Route path=":userId" element={<ProfileContainer />} />
+          </Route>
           
           <Route path='/users' 
             element={<UsersContainer />} />

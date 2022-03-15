@@ -1,6 +1,8 @@
 import React from "react";
-// import styles from './Users.css'
+import styles from './Users.css'
 import userPhoto from './../../assets/images/userPhoto.jpg'
+import {Link} from 'react-router-dom'
+import axios from 'axios'
 
 let Users = (props) => {
 
@@ -12,30 +14,68 @@ let Users = (props) => {
         pages.push(i)
     }
 
+
+
     return <div>
-    {/* <div>
-        {pages.map((item) => {
-            return <span className={props.currentPage === item && selectedPage} onClick={ (e) => {props.onPageChanged(item)}}>{item}</span> 
-            
-        })}
-        <span>1</span>
-        <span className="selectedPage">2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>4</span>
-    </div> */}
+        <div>
+            {pages.map((item) => {
+                return <span className={props.currentPage === item && "selectedPage"} onClick={ (e) => {props.onPageChanged(item)}}>{item}</span> 
+                
+            })}
+            {/* <span>1</span>
+            <span className="selectedPage">2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>4</span> */}
+        </div>
    
     {
         props.users.map(item => <div>
            
             <span>
                 <div>
-                    <img src={item.photos.small != null ? item.photos.small : userPhoto} className='userPhoto'/>
+                    <Link to={"/profile/" + item.id}>
+                        <img src={item.photos.small != null ? item.photos.small : userPhoto} className='userPhoto'/>
+                    </Link>
                 </div>
                 <div>
-                    {item.followed ? 
-                    <button onClick={props.unfollow(item.id)}>UNFOLLOW</button> 
-                    : <button onClick={props.follow(item.id)}>FOLLOW</button> }
+                    {item.followed 
+
+                    ? 
+                    <button disabled={props.followingInProgress.some(id => id === item.id)} onClick={() => {
+                        props.toggleFollowingProgress(true, item.id)
+                        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${item.id}`, {
+                            withCredentials: true,
+                            headers:  {
+                            "API-KEY": "a6204c8c-97c2-4758-b44a-fdb948ccd036"
+                            }
+                        })
+                            .then(response => {
+                                if(response.data.resultCode ===0){
+                                    props.unfollow(item.id)
+                                }
+                                props.toggleFollowingProgress(false, item.id)
+                            });
+                        }}>UNFOLLOW
+                    </button> 
+
+                    : 
+                    <button disabled={props.followingInProgress.some(id => id === item.id)} onClick={() =>{
+                        props.toggleFollowingProgress(true, item.id)
+                        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${item.id}`, {}, {
+                            withCredentials: true,
+                            headers:  {
+                                "API-KEY": "a6204c8c-97c2-4758-b44a-fdb948ccd036"
+                            } 
+                        })
+                            .then(response => {
+                                if(response.data.resultCode ===0){
+                                    props.follow(item.id)
+                                }
+                                props.toggleFollowingProgress(false, item.id)
+                            });
+                    }}>FOLLOW
+                    </button> }
                     
                 </div>
             </span>
